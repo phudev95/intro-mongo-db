@@ -10,13 +10,14 @@ describe('Project model', () => {
     try {
       await Project.init()
       await Project.create([
-        {org, name},
-        {org, name}
+        { org, name },
+        { org, name }
       ])
     } catch (e) {
       expect(e).toBeTruthy()
     }
   })
+
   test('budgetLeft virtual should calculate budget left', async () => {
     const project = await Project.create({
       name: 'p1',

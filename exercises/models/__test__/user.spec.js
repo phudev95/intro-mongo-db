@@ -11,7 +11,7 @@ describe('User model', () => {
       })
     } catch (e) {
       expect(e).toBeTruthy()
-    }    
+    }
   })
   test('last name must be required', async () => {
     expect.assertions(1)
@@ -23,7 +23,7 @@ describe('User model', () => {
       })
     } catch (e) {
       expect(e).toBeTruthy()
-    }    
+    }
   })
   test('email must be required', async () => {
     expect.assertions(1)
@@ -35,7 +35,7 @@ describe('User model', () => {
       })
     } catch (e) {
       expect(e).toBeTruthy()
-    }    
+    }
   })
 
   test('email must be unique', async () => {
@@ -57,7 +57,7 @@ describe('User model', () => {
       ])
     } catch (e) {
       expect(e).toBeTruthy()
-    }    
+    }
   })
 
   test('betaUser should default to false', async () => {
@@ -72,7 +72,7 @@ describe('User model', () => {
 
   test('should have correct fields', async () => {
     const now = Date.now()
-    const {_id, __v, ...user} = (await User.create({
+    const { _id, __v, ...user } = (await User.create({
       firstName: 'Tilly',
       lastName: 'Mills',
       email: 'tg@gmail.com',
@@ -86,6 +86,8 @@ describe('User model', () => {
       },
       pets: ['tido', 'miguel']
     })).toObject()
+
+    console.log('=====', new Date(now));
 
     expect(user).toEqual({
       firstName: 'Tilly',

@@ -7,17 +7,21 @@ global.newId = () => {
   return mongoose.Types.ObjectId()
 }
 
+const queue = [];
+
 beforeEach(async done => {
   const db = cuid()
   function clearDB() {
     for (var i in mongoose.connection.collections) {
-      mongoose.connection.collections[i].remove(function() {})
+      mongoose.connection.collections[i].remove(function () { })
     }
     return done()
   }
   if (mongoose.connection.readyState === 0) {
     try {
       await connect(url + db)
+      queue.push(mongoose.connection);
+
       clearDB()
     } catch (e) {
       throw e
@@ -26,10 +30,21 @@ beforeEach(async done => {
     clearDB()
   }
 })
-afterEach(done => {
-  mongoose.disconnect()
+afterEach(async done => {
+  // Drop database after testing
+  const first = queue.shift();
+  await first.dropDatabase();
+
+  mongoose.disconnect();
+
   return done()
 })
-afterAll(done => {
+afterAll(async done => {
+
+  // Drop databases of testing
+  queue.forEach(async function (connection) {
+    await connection.dropDatabase();
+  })
+
   return done()
 })
